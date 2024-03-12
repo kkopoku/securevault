@@ -10,7 +10,7 @@ const Routes = () => {
       element: <Root />,
       children: [
         {
-          path: "",
+          path: "/:id?",
           element: <Home />,
         },
         {
