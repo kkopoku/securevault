@@ -161,12 +161,12 @@ export default function Home() {
                 <div className="flex flex-row w-full">
                   <label
                     htmlFor="passphrase"
-                    className="flex w-28 bg-slate-300 pl-1"
+                    className="flex rounded-none w-28 bg-slate-300 pl-1"
                   >
                     Passphrase
                   </label>
                   <input
-                    className="border w-full px-2 focus:outline-none"
+                    className="border rounded-none w-full px-2 focus:outline-none"
                     id="passphrase"
                     type="text"
                     disabled={link}
@@ -181,12 +181,12 @@ export default function Home() {
                   <div className="flex basis-1/2">
                     <label
                       htmlFor="lifetime"
-                      className="flex w-28 bg-slate-300 pl-1"
+                      className="flex rounded-none w-28 bg-slate-300 pl-1"
                     >
                       Lifetime
                     </label>
                     <select
-                      className="border w-full px-2 focus:outline-none"
+                      className="border rounded-none w-full px-2 focus:outline-none"
                       id="lifetime"
                       type="text"
                       disabled={link}
@@ -208,12 +208,12 @@ export default function Home() {
                   <div className="flex basis-1/2">
                     <label
                       htmlFor="viewnumber"
-                      className="flex w-28 bg-slate-300 pl-1"
+                      className="flex w-28 rounded-none bg-slate-300 pl-1"
                     >
                       View No
                     </label>
                     <select
-                      className="border w-full px-2 focus:outline-none"
+                      className="border w-full rounded-none px-2 focus:outline-none"
                       id="viewnumber"
                       type="text"
                       disabled={link}
