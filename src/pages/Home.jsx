@@ -22,7 +22,7 @@ export default function Home() {
   let { id } = useParams();
   id = id ?? "";
 
-  const url = window.origin;
+  const url = window.location.origin+'/';
 
   const lifetimeOptions = [
     { name: "5 mins", value: 1000 * 60 * 5 },
@@ -234,7 +234,7 @@ export default function Home() {
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(link);
-                      alert("Link copied successfully");
+                      toast.success("Link copied successfully");
                     }}
                     className="p-2 w-4/5 lg:w-1/2 bg-slate-100 rounded-lg"
                   >
