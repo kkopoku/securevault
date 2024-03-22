@@ -13,10 +13,6 @@ const Routes = () => {
           path: "/:id?",
           element: <Home />,
         },
-        {
-          path: "otherpage",
-          element: <OtherPage />,
-        },
       ],
     },
   ]);
