@@ -42,8 +42,8 @@ export default function Home() {
     setShowPassword(!showPassword);
   }
 
-  function goToInitialPage(){
-    window.location.pathname = '/';
+  function goToInitialPage() {
+    window.location.pathname = "/";
     setSecureText("");
     setPassphrase("");
     setLifetime(null);
@@ -51,11 +51,10 @@ export default function Home() {
     setPageState("Normal");
     setLink("");
     setPageStatus("");
-
   }
 
   async function createLink() {
-    if (!secureText) return toast.error("Please enter a message");
+    if (!secureText) return toast("Please enter a message",{icon:"💩"});
     const data = {
       message: secureText,
       lifetime: lifetime ?? oneHour,
@@ -153,6 +152,7 @@ export default function Home() {
   }
 
   async function submitPassphrase() {
+    if (!passphrase) return toast("Type in a password man", {icon:"🤦🏾‍♂️"})
     const getLinkQueryParams = {
       id: id,
       passphrase: passphrase,
@@ -170,18 +170,18 @@ export default function Home() {
           "Content-Type": "application/json",
         },
       });
-      if (response.status === 401){
-        toast.error("wrong passphrase man", {id: id});
-      } else if (response.status === 200){
+      if (response.status === 401) {
+        toast.error("wrong passphrase man", { id: id });
+      } else if (response.status === 200) {
         response = await response.json();
-        toast.success("you know ball 😉", {id: id});
+        toast.success("you know ball 😉", { id: id });
         setPageStatus("MessageReceived");
-        setSecureText(response.message)
-      }else{
-        toast.error("an error occured please try again", {id: id});
+        setSecureText(response.message);
+      } else {
+        toast.error("an error occured please try again", { id: id });
       }
-    }catch(e) {
-      toast.error("an error occured please try again", {id: id});
+    } catch (e) {
+      toast.error("an error occured please try again", { id: id });
       console.log(e);
     }
   }
@@ -192,6 +192,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen w-full">
+      
       <div className="flex flex-row bg-blue-700 w-full py-1 justify-center text-white font-bold text-lg">
         <span className="text-green-500">Secure</span>Vault
       </div>
@@ -200,14 +201,14 @@ export default function Home() {
 
       {/* CREATING SECURE LINK STAGE */}
       {pageState === "Normal" && (
-        <div className="flex flex-col w-full min-h-screen items-center justify-center gap-10">
+        <div className="flex flex-col w-full items-center min-h-screen justify-center gap-10 px-4">
           {/* Message */}
-          <h2 className="w-4/5 lg:w-1/2 font-semibold">
-            Paste a password, secret message or private link below. Keep
-            sensitive info out of your email and chat logs.
+          <h2 className="w-full lg:w-1/2 font-semibold">
+            Input confidential information and create a secure link for private
+            access. Avoid storing sensitive data in email or chat logs.
           </h2>
           <textarea
-            className="border min-h-48 w-4/5 lg:w-1/2 placeholder:px-3 p-3 focus:outline-green-500"
+            className="min-h-48 w-full border-2 rounded border-blue-600 lg:w-1/2 placeholder:px-3 p-3"
             id="securetext"
             type="text"
             disabled={link || loading}
@@ -216,39 +217,42 @@ export default function Home() {
             onChange={(e) => setSecureText(e.target.value)}
           />
 
-          <div className="grid grid-cols-2 gap-2 border w-4/5 lg:w-1/2 items-start p-3">
+          {/* Privacy Options */}
+          <div className="grid grid-cols-2 gap-2 border-2 rounded border-blue-600 w-full lg:w-1/2 items-start p-3">
             <div className="col-span-2 font-bold">Privacy Options</div>
 
-            {/* PassPhrase */}
-            <div className="col-span-2 flex flex-row w-full">
-              <label
-                htmlFor="passphrase"
-                className="flex rounded-none w-28 bg-slate-300 pl-1"
-              >
-                Passphrase
-              </label>
-              <input
-                className={`border ${ (loading || link) ? 'bg-slate-200' : 'bg-white' }rounded-none w-full px-2 focus:outline-none`}
-                id="passphrase"
-                type="text"
-                disabled={link || loading}
-                value={passphrase}
-                placeholder="(Optional) Type Your Passphrase Here ..."
-                onChange={(e) => setPassphrase(e.target.value)}
-              />
-            </div>
+            <div className="col-span-2 flex flex-col gap-3 w-full">
+              {/* PassPhrase */}
+              <div className=" flex flex-col w-full">
+                <label htmlFor="passphrase" className="flex text-xs font-normal">
+                  PASSPHRASE (OPTIONAL)
+                </label>
+                <div className="relative">
+                <input
+                  className={`border ${
+                    loading || link ? "bg-slate-200" : "bg-white"
+                  } w-full px-2 focus:outline-none border-green-600 rounded`}
+                  id="passphrase"
+                  type={showPassword ? "text" : "password"}
+                  disabled={link || loading}
+                  value={passphrase}
+                  placeholder="Type Your Passphrase Here ..."
+                  onChange={(e) => setPassphrase(e.target.value)}
+                />
+                <span onClick={toggleShowPassword} className="absolute inset-y-0 right-0 flex items-center pr-3 hover:cursor-pointer">{showPassword ? '🐵' : '🙈'}</span>
+                </div>
+              </div>
 
-            {/* Lifetime */}
-            <div className="col-span-2">
-              <div className="flex basis-1/2">
-                <label
-                  htmlFor="lifetime"
-                  className="flex rounded-none w-28 bg-slate-300 pl-1"
-                >
-                  Lifetime
+              {/* Lifetime */}
+
+              <div className="flex flex-col basis-1/2">
+                <label htmlFor="lifetime" className="flex text-xs font-normal">
+                  LIFETIME <span className="text-red-700">&nbsp; *</span>
                 </label>
                 <select
-                  className={`border ${ (loading || link) ? 'bg-slate-200' : 'bg-white' } rounded-none w-full px-2 focus:outline-none`}
+                  className={`border ${
+                    loading || link ? "bg-slate-200" : "bg-white"
+                  } w-full px-2 focus:outline-none border-green-600 rounded`}
                   id="lifetime"
                   type="text"
                   disabled={link || loading}
@@ -264,19 +268,17 @@ export default function Home() {
                   })}
                 </select>
               </div>
-            </div>
 
-            {/* ViewNumber */}
-            <div className="col-span-2">
-              <div className="flex basis-1/2">
-                <label
-                  htmlFor="viewnumber"
-                  className="flex w-28 rounded-none bg-slate-300 pl-1"
-                >
-                  View No
+              {/* ViewNumber */}
+
+              <div className="flex flex-col basis-1/2">
+                <label htmlFor="viewnumber" className="flex text-xs font-normal">
+                  VIEW NUMBER <span className="text-red-700">&nbsp; *</span>
                 </label>
                 <select
-                  className={`border ${ (loading || link) ? 'bg-slate-200' : 'bg-white' } w-full rounded-none px-2 focus:outline-none`}
+                  className={`border ${
+                    loading || link ? "bg-slate-200" : "bg-white"
+                  } w-full px-2 focus:outline-none border-green-600 rounded`}
                   id="viewnumber"
                   type="text"
                   disabled={link || loading}
@@ -302,7 +304,10 @@ export default function Home() {
               >
                 {`Link Created: ${link}`}
               </button>
-              <button onClick={goToInitialPage} className="p-2 text-sm w-4/5 lg:w-1/2 bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105">
+              <button
+                onClick={goToInitialPage}
+                className="p-2 text-sm w-4/5 lg:w-1/2 bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105"
+              >
                 Generate new link
               </button>
             </div>
@@ -312,37 +317,43 @@ export default function Home() {
               onClick={createLink}
               disabled={link || loading}
             >
-              Create Secret Link
+              Create Secure Link
             </button>
           )}
-          <div className="w-4/5 lg:w-1/2 font-semibold">
-            NB: A secret link only works once and then disappears forever. Data
+          <div className="w-full lg:w-1/2 font-semibold">
+            NB: A secure link only works for the number of views specified on creation and disappears forever. Data
             is erased after link is accessed or expired.
           </div>
         </div>
       )}
 
       {pageState === "Viewing" && (
-        <div className="flex flex-col min-h-[90vh] justify-center items-center gap-10">
+
+        <div className="flex flex-col min-h-screen justify-center items-center gap-10 px-4">
+
           {loading && <LoadingWidget />}
+
           {/* UNAUTHORIZED */}
           {pageStatus === "Unauthorized" && (
-            <div className="flex flex-col w-4/5 lg:w-1/2 gap-3 items-center">
+            <div className="flex flex-col w-full lg:w-1/2 gap-3 items-center">
               <label htmlFor="confirmPassphrase">
                 Enter Passphrase To Unlock Secret Message
               </label>
+              <div className="w-full relative">
               <input
-                className="border w-full px-2 focus:outline-none"
+                className="w-full px-2 rounded border-2 border-blue-600"
                 value={passphrase}
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter passphrase here ..."
                 onChange={(e) => setPassphrase(e.target.value)}
                 id="confirmPassphrase"
               />
-              {/* {error && <span className="text-red-600 text-xs">Wrong password</span>} */}
+              <span onClick={toggleShowPassword} className="absolute inset-y-0 right-0 flex items-center pr-3 hover:cursor-pointer">{showPassword ? '🐵' : '🙈'}</span>
+              </div>
               <button
                 className="p-2 text-sm bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105"
-                onClick={()=>{
-                  submitPassphrase()
+                onClick={() => {
+                  submitPassphrase();
                 }}
               >
                 View Message
@@ -357,7 +368,7 @@ export default function Home() {
                 Secret Message
               </label>
               <textarea
-                className="border min-h-48 w-full p-3 focus:outline-none"
+                className="min-h-48 w-full border-2 rounded border-blue-600 lg:w-1/2 placeholder:px-3 p-3"
                 value={secureText}
                 id="receivedMessage"
                 readOnly
@@ -374,15 +385,15 @@ export default function Home() {
 
           {/* NOT FOUND */}
           {pageStatus === "NotFound" && (
-            <div className="flex flex-col w-4/5 lg:w-1/2 gap-3 items-center">
+            <div className="flex flex-col w-4/5 lg:w-1/2 gap-3 items-center text-3xl font-bold">
               NOT FOUND MAN!
             </div>
           )}
 
           {/* UNEXPECTED ERROR */}
           {pageStatus === "UnexpectedError" && (
-            <div className="flex flex-col w-4/5 lg:w-1/2 gap-3 items-center">
-              Unexpected Error
+            <div className="flex flex-col w-4/5 lg:w-1/2 gap-3 items-center text-3xl font-bold">
+              SOMETHING WENT WRONG PLEASE TRY AGAIN
             </div>
           )}
 
