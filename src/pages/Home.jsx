@@ -363,12 +363,12 @@ export default function Home() {
 
           {/* MESSAGE RECEIVED */}
           {pageStatus === "MessageReceived" && (
-            <div className="flex flex-col w-4/5 lg:w-1/2 gap-3 items-center">
+            <div className="flex flex-col w-full lg:w-1/2 gap-3 items-center">
               <label htmlFor="receivedMessage" className="text-2xl font-bold">
                 Secret Message
               </label>
               <textarea
-                className="min-h-48 w-full border-2 rounded border-blue-600 lg:w-1/2 placeholder:px-3 p-3"
+                className="min-h-48 w-full border-2 rounded border-blue-600 placeholder:px-3 p-3"
                 value={secureText}
                 id="receivedMessage"
                 readOnly
