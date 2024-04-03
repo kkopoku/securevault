@@ -174,7 +174,7 @@ export default function Home() {
         toast.error("wrong passphrase man", { id: id });
       } else if (response.status === 200) {
         response = await response.json();
-        toast.success("you know ball 😉", { id: id });
+        toast.success("message retrieved 😉", { id: id });
         setPageStatus("MessageReceived");
         setSecureText(response.message);
       } else {
