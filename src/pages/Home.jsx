@@ -208,7 +208,7 @@ export default function Home() {
             access. Avoid storing sensitive data in email or chat logs.
           </h2>
           <textarea
-            className="min-h-48 w-full border-2 rounded border-blue-600 lg:w-1/2 placeholder:px-3 p-3"
+            className={`min-h-48 w-full border ${link || loading ? 'bg-slate-100' : 'bg-white'} rounded border-blue-600 lg:w-1/2 placeholder:px-3 p-3`}
             id="securetext"
             type="text"
             disabled={link || loading}
@@ -218,7 +218,7 @@ export default function Home() {
           />
 
           {/* Privacy Options */}
-          <div className="grid grid-cols-2 gap-2 border-2 rounded border-blue-600 w-full lg:w-1/2 items-start p-3">
+          <div className="grid grid-cols-2 gap-2 border bg-blue-50 bg-opacity-70 rounded border-slate-400 w-full lg:w-1/2 items-start p-3">
             <div className="col-span-2 font-bold">Privacy Options</div>
 
             <div className="col-span-2 flex flex-col gap-3 w-full">
@@ -313,7 +313,7 @@ export default function Home() {
             </div>
           ) : (
             <button
-              className="p-2 text-sm w-4/5 lg:w-1/2 bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105"
+              className="p-2 text-sm text-white w-4/5 lg:w-1/2 bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105"
               onClick={createLink}
               disabled={link || loading}
             >
@@ -368,7 +368,7 @@ export default function Home() {
                 Secret Message
               </label>
               <textarea
-                className="min-h-48 w-full border-2 rounded border-blue-600 placeholder:px-3 p-3"
+                className="min-h-48 w-full border bg-slate-200 rounded border-slate-300 placeholder:px-3 p-3 focus:border-none"
                 value={secureText}
                 id="receivedMessage"
                 readOnly
@@ -376,7 +376,7 @@ export default function Home() {
 
               <button
                 onClick={goToInitialPage}
-                className="p-2 text-sm bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105 w-full"
+                className="p-2 text-sm text-white bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105 w-full"
               >
                 Generate new link
               </button>
