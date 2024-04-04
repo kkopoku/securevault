@@ -88,7 +88,7 @@ export default function Home() {
 
   const LoadingWidget = () => {
     return (
-      <div className="animate-pulse flex space-x-4 w-4/5 lg:w-1/2 justify-center items-center">
+      <div className="animate-pulse flex space-x-4 lg:w-1/2 justify-center items-center">
         <div className="flex-1 w-full space-y-6 py-1">
           <div className="h-3 bg-slate-200 rounded"></div>
           <div className="h-3 bg-slate-200 w-1/2 rounded"></div>
