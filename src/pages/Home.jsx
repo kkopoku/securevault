@@ -13,6 +13,7 @@ export default function Home() {
   const [link, setLink] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [pageStatus, setPageStatus] = useState("");
+  const [recipient, setRecipient] = useState("");
 
   const API = process.env.REACT_APP_API_URL;
   const oneHour = 1000 * 60 * 60;
@@ -54,12 +55,19 @@ export default function Home() {
   }
 
   async function createLink() {
-    if (!secureText) return toast("Please enter a message",{icon:"💩"});
+    if (!secureText) return toast.error("Please enter a message");
+
+    if(recipient){
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(recipient)) return toast.error("Please enter a valid email address");
+    }
+
     const data = {
       message: secureText,
       lifetime: lifetime ?? oneHour,
       viewNumber: viewNumber ?? 1,
       passphrase: passphrase ?? null,
+      recipient: recipient ?? null,
     };
     setLoading(true);
     const toastId = toast.loading("creating link");
@@ -222,6 +230,7 @@ export default function Home() {
             <div className="col-span-2 font-bold">Privacy Options</div>
 
             <div className="col-span-2 flex flex-col gap-3 w-full">
+
               {/* PassPhrase */}
               <div className=" flex flex-col w-full">
                 <label htmlFor="passphrase" className="flex text-xs font-normal">
@@ -270,7 +279,6 @@ export default function Home() {
               </div>
 
               {/* ViewNumber */}
-
               <div className="flex flex-col basis-1/2">
                 <label htmlFor="viewnumber" className="flex text-xs font-normal">
                   VIEW NUMBER <span className="text-red-700">&nbsp; *</span>
@@ -290,6 +298,26 @@ export default function Home() {
                   })}
                 </select>
               </div>
+
+              <div className=" flex flex-col w-full">
+                <label htmlFor="recipient" className="flex text-xs font-normal">
+                  RECIPIENT EMAIL (OPTIONAL)
+                </label>
+                <div className="relative">
+                <input
+                  className={`border ${
+                    loading || link ? "bg-slate-200" : "bg-white"
+                  } w-full px-2 focus:outline-none border-green-600 rounded`}
+                  id="recipient"
+                  type="text"
+                  disabled={link || loading}
+                  value={recipient}
+                  placeholder="Type Recipient Email Here ..."
+                  onChange={(e) => setRecipient(e.target.value)}
+                />
+                </div>
+              </div>
+
             </div>
           </div>
 
