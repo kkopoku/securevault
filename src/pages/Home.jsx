@@ -306,7 +306,7 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* <div className=" flex flex-col w-full">
+              {<div className=" flex flex-col w-full">
                 <label htmlFor="recipient" className="flex text-xs font-normal">
                   RECIPIENT EMAIL (OPTIONAL)
                 </label>
@@ -323,7 +323,7 @@ export default function Home() {
                   onChange={(e) => setRecipient(e.target.value)}
                 />
                 </div>
-              </div> */}
+              </div>}
 
             </div>
           </div>
