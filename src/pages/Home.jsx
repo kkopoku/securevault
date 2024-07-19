@@ -89,7 +89,7 @@ export default function Home() {
       toast.success("Link created", { id: toastId });
       setLink(response.link.link);
     } catch (e) {
-      toast.error("An error occured, please try again later", { id: toastId });
+      toast.error("An error occurred, please try again later", { id: toastId });
       console.log("Error: " + e.message);
     }
     setLoading(false);
@@ -335,7 +335,7 @@ export default function Home() {
                   navigator.clipboard.writeText(link);
                   toast.success("Link copied successfully");
                 }}
-                className="p-2 w-4/5 lg:w-1/2 bg-slate-100 rounded-lg"
+                className="p-2 w-full lg:w-1/2 bg-slate-100 rounded-lg"
               >
                 {`Link Created: ${link}`}
               </button>
