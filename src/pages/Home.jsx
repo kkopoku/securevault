@@ -14,6 +14,7 @@ export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const [pageStatus, setPageStatus] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const API = process.env.REACT_APP_API_URL;
   const oneHour = 1000 * 60 * 60;
@@ -160,7 +161,10 @@ export default function Home() {
   }
 
   async function submitPassphrase() {
-    if (!passphrase) return toast("Type in a password man", {icon:"🤦🏾‍♂️"})
+    if (!passphrase) {
+      setErrorMessage("Please enter a passphrase")
+      return toast("Passphrase is required", {icon:"🚫"})
+    }
     const getLinkQueryParams = {
       id: id,
       passphrase: passphrase,
@@ -180,16 +184,19 @@ export default function Home() {
       });
       if (response.status === 401) {
         toast.error("wrong passphrase man", { id: id });
+        setErrorMessage("Incorrect passphrase, please try again")
       } else if (response.status === 200) {
         response = await response.json();
         toast.success("message retrieved 😉", { id: id });
         setPageStatus("MessageReceived");
         setSecureText(response.message);
       } else {
-        toast.error("an error occured please try again", { id: id });
+        setErrorMessage("Something went wrong, kindly try again later")
+        toast.error("an error occurred please try again", { id: id });
       }
     } catch (e) {
-      toast.error("an error occured please try again", { id: id });
+      toast.error("an error occurred please try again", { id: id });
+      setErrorMessage("Something went wrong, kindly try again later")
       console.log(e);
     }
   }
@@ -334,14 +341,14 @@ export default function Home() {
               </button>
               <button
                 onClick={goToInitialPage}
-                className="p-2 text-sm w-4/5 lg:w-1/2 bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105"
+                className="p-2 text-sm w-full lg:w-1/2 bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all"
               >
                 Generate new link
               </button>
             </div>
           ) : (
             <button
-              className="p-2 text-sm text-white w-4/5 lg:w-1/2 bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105"
+              className="p-2 text-sm text-white w-full lg:w-1/2 bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all"
               onClick={createLink}
               disabled={link || loading}
             >
@@ -363,30 +370,41 @@ export default function Home() {
 
           {/* UNAUTHORIZED */}
           {pageStatus === "Unauthorized" && (
-            <div className="flex flex-col w-full lg:w-1/2 gap-3 items-center">
-              <label htmlFor="confirmPassphrase">
+            <form className="flex flex-col w-full lg:w-1/2 gap-3 items-center">
+              <label htmlFor="confirmPassphrase" className="text-xl font-bold">
                 Enter Passphrase To Unlock Secret Message
               </label>
               <div className="w-full relative">
               <input
-                className="w-full px-2 rounded border-2 border-blue-600"
+                className="w-full p-2 rounded border-2 border-black"
                 value={passphrase}
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter passphrase here ..."
-                onChange={(e) => setPassphrase(e.target.value)}
+                onChange={(e) => {
+                  setPassphrase(e.target.value)
+                  setErrorMessage("");
+                }}
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  submitPassphrase()
+                }}
                 id="confirmPassphrase"
               />
-              <span onClick={toggleShowPassword} className="absolute inset-y-0 right-0 flex items-center pr-3 hover:cursor-pointer">{showPassword ? '🐵' : '🙈'}</span>
+              <span onClick={toggleShowPassword}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 hover:cursor-pointer">{showPassword ? '🐵' : '🙈'}
+              </span>
               </div>
               <button
-                className="p-2 text-sm bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105"
-                onClick={() => {
-                  submitPassphrase();
+                className="p-2 text-white text-sm w-full bg-green-500 hover:bg-green-600 rounded-lg font-semibold transition-all"
+                onClick={(e) => {
+                  e.preventDefault()
+                  submitPassphrase()
                 }}
               >
                 View Message
               </button>
-            </div>
+              {errorMessage && (<span className="text-red-500">{errorMessage}</span>)}
+            </form>
           )}
 
           {/* MESSAGE RECEIVED */}
@@ -413,8 +431,13 @@ export default function Home() {
 
           {/* NOT FOUND */}
           {pageStatus === "NotFound" && (
-            <div className="flex flex-col w-4/5 lg:w-1/2 gap-3 items-center text-3xl font-bold">
-              NOT FOUND MAN!
+            <div className="flex flex-col gap-10 w-4/5 lg:w-1/2 items-center text-3xl font-bold">
+              <div>NOT FOUND ...</div><button
+                onClick={goToInitialPage}
+                className="p-2 text-sm text-white w-full lg:w-1/2 bg-green-500 hover:bg-green-600 rounded-lg font-semibold transition-all animate-bounce"
+              >
+                Click Here to send secure message
+              </button>
             </div>
           )}
 
