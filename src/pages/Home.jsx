@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react"
 
 export default function Home() {
   const [secureText, setSecureText] = useState("");
@@ -451,6 +452,7 @@ export default function Home() {
           {/* <div>Loading and this is the pageState: {pageStatus}</div> */}
         </div>
       )}
+      <Analytics />
     </div>
   );
 }
