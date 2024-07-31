@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react"
+import TopNavigation from "../components/TopNavigation";
 
 export default function Home() {
   const [secureText, setSecureText] = useState("");
@@ -207,11 +208,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen w-full font-mono tracking-tighter">
       
-      <div className="flex flex-row bg-blue-700 w-full py-1 justify-center text-white font-bold text-lg">
-        <span className="text-green-500">Secure</span>Vault
-      </div>
+      <TopNavigation />
 
       <Toaster />
 
@@ -356,7 +355,7 @@ export default function Home() {
               Create Secure Link
             </button>
           )}
-          <div className="w-full lg:w-1/2 font-semibold">
+          <div className="w-full lg:w-1/2 font-semibold mb-10">
             NB: A secure link only works for the number of views specified on creation and disappears forever. Data
             is erased after link is accessed or expired.
           </div>
