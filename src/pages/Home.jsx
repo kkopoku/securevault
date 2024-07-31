@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react"
 import TopNavigation from "../components/TopNavigation";
+import { FaRegCopy } from "react-icons/fa";
 
 export default function Home() {
   const [secureText, setSecureText] = useState("");
@@ -410,6 +411,7 @@ export default function Home() {
           {/* MESSAGE RECEIVED */}
           {pageStatus === "MessageReceived" && (
             <div className="flex flex-col w-full lg:w-1/2 gap-3 items-center">
+
               <label htmlFor="receivedMessage" className="text-2xl font-bold">
                 Secret Message
               </label>
@@ -420,12 +422,24 @@ export default function Home() {
                 readOnly
               />
 
-              <button
-                onClick={goToInitialPage}
-                className="p-2 text-sm text-white bg-green-500 hover:bg-green-600 rounded-lg font-bold transition-all hover:scale-105 w-full"
-              >
-                Generate new link
-              </button>
+              <div className="flex w-full gap-2">
+
+                <button
+                  onClick={goToInitialPage}
+                  className="p-2 text-sm text-white bg-green-500 hover:bg-green-700 rounded-lg font-bold transition-all w-full"
+                >
+                  Generate new link
+                </button>
+
+                <button className="flex items-center justify-center bg-slate-100 hover:bg-slate-300 rounded-md px-2" onClick={()=>{
+                    navigator.clipboard.writeText(secureText)
+                    toast("Message Copied",{type:"success"})
+                  }}>
+                  <FaRegCopy />
+                </button>
+
+              </div>
+              
             </div>
           )}
 
